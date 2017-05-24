@@ -1,5 +1,6 @@
 import {EventEmitter} from 'events'
-import Dispatcher from '../Dispatcher'
+import dispatcher from '../Dispatcher'
+import userService from '../services/UserService';
 
 class RegistrationStore extends EventEmitter{
   constructor(){
@@ -19,7 +20,7 @@ class RegistrationStore extends EventEmitter{
 
   getErrors(){
     return this.errors
-    
+
   }
 
   validate(){
@@ -28,7 +29,7 @@ class RegistrationStore extends EventEmitter{
     this.validatePresence('lastName')
     this.validatePresence('password')
     this.validatePresence('email')
-    
+
   }
 
   validatePresence(fieldName){
@@ -48,8 +49,10 @@ class RegistrationStore extends EventEmitter{
 
   submitRegistration(){
     this.validate()
+    if(Object.keys(this.errors).length === 0){
+      userService.submitRegistration(this.fields)
+    }
     this.emit('change')
-    console.log(this.fields)
   }
 
   handleActions(action){
@@ -68,5 +71,5 @@ class RegistrationStore extends EventEmitter{
 }
 
 const store = new RegistrationStore()
-Dispatcher.register(store.handleActions.bind(store))
+dispatcher.register(store.handleActions.bind(store))
 export default store

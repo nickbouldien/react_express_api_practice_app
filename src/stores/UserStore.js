@@ -1,5 +1,5 @@
 import {EventEmitter} from 'events'
-import Dispatcher from '../Dispatcher'
+import dispatcher from '../Dispatcher'
 
 class UserStore extends EventEmitter{
   constructor(){
@@ -18,7 +18,11 @@ class UserStore extends EventEmitter{
 
   handleActions(action){
     switch(action.type){
-      case("CREATE_USER"):{
+      // case("CREATE_USER"):{
+      //   this.updateUser(action.attributes)
+      //   break
+      // }
+      case("UPDATE_USER"):{
         this.updateUser(action.attributes)
         break
       }
@@ -28,6 +32,6 @@ class UserStore extends EventEmitter{
 }
 
 const store = new UserStore()
-Dispatcher.register(store.handleActions.bind(store))
+dispatcher.register(store.handleActions.bind(store))
 window.store = store
 export default store

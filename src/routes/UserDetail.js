@@ -1,13 +1,25 @@
 import React, { Component } from 'react';
-import UserStore from '../stores/UserStore'
+import userStore from '../stores/UserStore'
 
 class UserDetail extends Component {
   constructor(props){
     super(props)
     console.log('dsfasfdas')
     this.state={
-      user: UserStore.getFields(),
+      user: userStore.getFields(),
     }
+  }
+
+  componentWillMount(){
+    userStore.on('change', this.updateUser)
+  }
+
+  componentWillUnmount(){
+    userStore.removeListener('change', this.updateUser)
+  }
+
+  updateUser(){
+    this.setState({user: userStore.getFields()})
   }
 
   render() {
